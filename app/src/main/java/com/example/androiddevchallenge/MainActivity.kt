@@ -16,7 +16,6 @@
 package com.example.androiddevchallenge
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.lazy.LazyColumn
@@ -37,15 +36,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.NavOptionsBuilder
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigate
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.NavType
+import androidx.navigation.compose.*
+import com.google.gson.Gson
 import androidx.compose.foundation.clickable as clickable1
 
 class MainActivity : AppCompatActivity() {
@@ -69,9 +64,8 @@ fun CatsFeedList(cats: List<Cats>, navController: NavController) {
         items(cats.size) { index ->
 //            Text(text = "Name: ${cats[index].name}")
             ArtistCard(cats[index], onClick = {
-                Log.v("Gracker","$cats[index].name")
-                navController.navigate("detail_screen", builder = {
-                })
+                val catJson = Gson().toJson(cats[index])
+                navController.navigate("detail_screen/$catJson")
             })
         }
     }
@@ -164,12 +158,20 @@ fun ComposeNavigation() {
         navController = navController,
         startDestination = "main_screen"
     ) {
+        // list page
         composable("main_screen") {
             MainPageScreen(navController = navController)
         }
-        composable("detail_screen") {
-            val mDetailPage:DetailPage = DetailPage()
-            mDetailPage.detailPageScreen(navController = navController)
+        // detail page
+        composable(
+                "detail_screen/{cat}",
+                arguments = listOf( navArgument("cat") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val mDetailPage = DetailPage()
+            backStackEntry.arguments?.getString("cat")?.let { json ->
+                val cat = Gson().fromJson(json,Cats::class.java)
+                mDetailPage.detailPageScreen(navController = navController,cat)
+            }
         }
     }
 }
@@ -178,13 +180,13 @@ fun ComposeNavigation() {
 fun MainPageScreen(navController: NavController) {
     Surface(color = MaterialTheme.colors.background) {
         var catsList: ArrayList<Cats> = ArrayList()
-        catsList.add(Cats("cats1", R.drawable.cats1, "Chris", R.drawable.owner1))
-        catsList.add(Cats("cats2", R.drawable.cats2, "Lee", R.drawable.owner2))
-        catsList.add(Cats("cats3", R.drawable.cats3, "Lina", R.drawable.owner3))
-        catsList.add(Cats("cats4", R.drawable.cats4, "Carl", R.drawable.owner4))
-        catsList.add(Cats("cats5", R.drawable.cats5, "Miksa", R.drawable.owner5))
-        catsList.add(Cats("cats6", R.drawable.cats6, "Gracker", R.drawable.owner6))
-        catsList.add(Cats("cats7", R.drawable.cats7, "Sam", R.drawable.owner7))
+        catsList.add(Cats("cats1", R.drawable.cats1, "Chris", R.drawable.owner1,R.string.cat1))
+        catsList.add(Cats("cats2", R.drawable.cats2, "Lee", R.drawable.owner2,R.string.cat2))
+        catsList.add(Cats("cats3", R.drawable.cats3, "Lina", R.drawable.owner3,R.string.cat3))
+        catsList.add(Cats("cats4", R.drawable.cats4, "Carl", R.drawable.owner4,R.string.cat4))
+        catsList.add(Cats("cats5", R.drawable.cats5, "Miksa", R.drawable.owner5,R.string.cat5))
+        catsList.add(Cats("cats6", R.drawable.cats6, "Gracker", R.drawable.owner6,R.string.cat6))
+        catsList.add(Cats("cats7", R.drawable.cats7, "Sam", R.drawable.owner7,R.string.cat7))
         CatsFeedList(catsList, navController)
     }
 }
