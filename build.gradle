@@ -23,6 +23,9 @@ buildscript {
         maven { url 'http://maven.aliyun.com/nexus/content/repositories/google' }
         maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        google()
+        jcenter()
+        mavenCentral()
     }
 
     dependencies {
@@ -40,6 +43,9 @@ subprojects {
         maven { url 'http://maven.aliyun.com/nexus/content/repositories/google' }
         maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        google()
+        jcenter()
+        mavenCentral()
     }
 
     apply plugin: 'com.diffplug.spotless'
