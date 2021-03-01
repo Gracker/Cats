@@ -16,31 +16,126 @@
 package com.example.androiddevchallenge
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.androiddevchallenge.ui.theme.MyTheme
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavOptionsBuilder
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigate
+import androidx.navigation.compose.rememberNavController
+import androidx.compose.foundation.clickable as clickable1
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MyTheme {
-                MyApp()
+                ComposeNavigation()
             }
         }
     }
 }
 
-// Start building your app here!
 @Composable
-fun MyApp() {
-    Surface(color = MaterialTheme.colors.background) {
-        Text(text = "Ready... Set... GO!")
+fun CatsFeedList(cats: List<Cats>, navController: NavController) {
+    LazyColumn(
+        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        items(cats.size) { index ->
+//            Text(text = "Name: ${cats[index].name}")
+            ArtistCard(cats[index], onClick = {
+                Log.v("Gracker","$cats[index].name")
+                navController.navigate("detail_screen", builder = {
+                })
+            })
+        }
+    }
+}
+
+@Composable
+fun ArtistCard(
+    cat: Cats,
+    onClick: () -> Unit,
+) {
+    Column(Modifier
+        .padding(PaddingValues(horizontal = 0.dp, vertical = 8.dp))
+        .clickable1(onClick = onClick)
+    ) {
+        val padding = 8.dp
+        Row(verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(PaddingValues(horizontal = 0.dp, vertical = 2.dp))
+
+        ) {
+            val image: Painter = painterResource(id = cat.ownerImage)
+            Image(
+                modifier = Modifier
+                    .height(50.dp)
+                    .width(50.dp)
+                    .clip(shape = RoundedCornerShape(20))
+                    .border(
+                        width = 2.dp,
+                        color = Color.White,
+                        shape = RoundedCornerShape(20)),
+                painter = image, contentDescription = "",
+                contentScale = ContentScale.Crop
+            )
+            Column(Modifier
+                .padding(padding)
+                .weight(1f)
+                .align(Alignment.CenterVertically)) {
+                Text(cat.owner)
+
+                val randoms = (0..60).random()
+                Text("$randoms minutes ago")
+            }
+        }
+
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(PaddingValues(horizontal = 0.dp, vertical = 2.dp))
+        ) {
+            val catImg: Painter = painterResource(id = cat.image)
+            Image(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(300.dp)
+                    .clip(shape = RoundedCornerShape(4))
+                    .border(
+                        width = 2.dp,
+                        color = Color.White,
+                        shape = RoundedCornerShape(4)
+                    ),
+                painter = catImg, contentDescription = "",
+                contentScale = ContentScale.Crop
+            )
+        }
     }
 }
 
@@ -48,7 +143,8 @@ fun MyApp() {
 @Composable
 fun LightPreview() {
     MyTheme {
-        MyApp()
+        val navController = rememberNavController()
+        MainPageScreen(navController = navController)
     }
 }
 
@@ -56,6 +152,39 @@ fun LightPreview() {
 @Composable
 fun DarkPreview() {
     MyTheme(darkTheme = true) {
-        MyApp()
+        val navController = rememberNavController()
+        MainPageScreen(navController = navController)
+    }
+}
+
+@Composable
+fun ComposeNavigation() {
+    val navController = rememberNavController()
+    NavHost(
+        navController = navController,
+        startDestination = "main_screen"
+    ) {
+        composable("main_screen") {
+            MainPageScreen(navController = navController)
+        }
+        composable("detail_screen") {
+            val mDetailPage:DetailPage = DetailPage()
+            mDetailPage.detailPageScreen(navController = navController)
+        }
+    }
+}
+
+@Composable
+fun MainPageScreen(navController: NavController) {
+    Surface(color = MaterialTheme.colors.background) {
+        var catsList: ArrayList<Cats> = ArrayList()
+        catsList.add(Cats("cats1", R.drawable.cats1, "Chris", R.drawable.owner1))
+        catsList.add(Cats("cats2", R.drawable.cats2, "Lee", R.drawable.owner2))
+        catsList.add(Cats("cats3", R.drawable.cats3, "Lina", R.drawable.owner3))
+        catsList.add(Cats("cats4", R.drawable.cats4, "Carl", R.drawable.owner4))
+        catsList.add(Cats("cats5", R.drawable.cats5, "Miksa", R.drawable.owner5))
+        catsList.add(Cats("cats6", R.drawable.cats6, "Gracker", R.drawable.owner6))
+        catsList.add(Cats("cats7", R.drawable.cats7, "Sam", R.drawable.owner7))
+        CatsFeedList(catsList, navController)
     }
 }
