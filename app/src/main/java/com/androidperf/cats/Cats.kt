@@ -13,6 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.androiddevchallenge
+package com.androidperf.cats
 
 class Cats(var name: String, var image: Int, var owner: String, val ownerImage: Int, var des: Int)

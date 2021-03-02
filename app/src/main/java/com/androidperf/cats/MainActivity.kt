@@ -13,9 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.androiddevchallenge
+package com.androidperf.cats
 
+import android.os.Build
 import android.os.Bundle
+import android.view.View
+import android.view.WindowInsetsController
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
@@ -42,6 +45,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.view.doOnLayout
 import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -49,13 +53,23 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
-import com.example.androiddevchallenge.ui.theme.MyTheme
+import com.androidperf.cats.theme.MyTheme
 import com.google.gson.Gson
 import androidx.compose.foundation.clickable as clickable1
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.decorView.doOnLayout {
+                it.windowInsetsController?.setSystemBarsAppearance(
+                    WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
+                    WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+                )
+            }
+        } else {
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        }
         setContent {
             MyTheme {
                 ComposeNavigation()
@@ -77,7 +91,7 @@ fun CatsFeedList(cats: List<Cats>, navController: NavController) {
                 cats[index],
                 onClick = {
                     val catJson = Gson().toJson(cats[index])
-                    navController.navigate("detail_screen/$catJson")
+                    navController.navigate("detail_screen/$catJson") {}
                 }
             )
         }
@@ -199,13 +213,13 @@ fun ComposeNavigation() {
 fun MainPageScreen(navController: NavController) {
     Surface(color = MaterialTheme.colors.background) {
         var catsList: ArrayList<Cats> = ArrayList()
-        catsList.add(Cats("cats1", R.drawable.cats1, "Chris", R.drawable.owner1, R.string.cat1))
-        catsList.add(Cats("cats2", R.drawable.cats2, "Lee", R.drawable.owner2, R.string.cat2))
-        catsList.add(Cats("cats3", R.drawable.cats3, "Lina", R.drawable.owner3, R.string.cat3))
-        catsList.add(Cats("cats4", R.drawable.cats4, "Carl", R.drawable.owner4, R.string.cat4))
-        catsList.add(Cats("cats5", R.drawable.cats5, "Miksa", R.drawable.owner5, R.string.cat5))
-        catsList.add(Cats("cats6", R.drawable.cats6, "Gracker", R.drawable.owner6, R.string.cat6))
-        catsList.add(Cats("cats7", R.drawable.cats7, "Sam", R.drawable.owner7, R.string.cat7))
+        catsList.add(Cats("Momo", R.drawable.cats1, "Chris", R.drawable.owner1, R.string.cat1))
+        catsList.add(Cats("Kuro", R.drawable.cats2, "Lee", R.drawable.owner2, R.string.cat2))
+        catsList.add(Cats("Hana", R.drawable.cats3, "Lina", R.drawable.owner3, R.string.cat3))
+        catsList.add(Cats("Koko", R.drawable.cats4, "Carl", R.drawable.owner4, R.string.cat4))
+        catsList.add(Cats("Fuko", R.drawable.cats5, "Miksa", R.drawable.owner5, R.string.cat5))
+        catsList.add(Cats("Mei", R.drawable.cats6, "Gracker", R.drawable.owner6, R.string.cat6))
+        catsList.add(Cats("Cal", R.drawable.cats7, "Sam", R.drawable.owner7, R.string.cat7))
         CatsFeedList(catsList, navController)
     }
 }

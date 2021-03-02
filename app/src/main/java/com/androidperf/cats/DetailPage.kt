@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.androiddevchallenge
+package com.androidperf.cats
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -29,8 +29,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,28 +46,48 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.navigate
+import androidx.navigation.compose.popUpTo
 
 class DetailPage {
     @Composable
     fun DetailPageScreen(navController: NavController, cat: Cats) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = cat.name
+                        )
+                    },
+                    backgroundColor = Color.White, elevation = 10.dp,
+                    navigationIcon = {
+                        IconButton(
+                            onClick = {
+                                navController.navigate("main_screen") {
+                                    popUpTo("main_screen") { inclusive = true }
+                                }
+                            }
+                        ) {
+                            val backIcon: Painter = painterResource(R.drawable.ic_back)
+                            Icon(painter = backIcon, contentDescription = "ic_back")
+                        }
+                    }
+                )
+            },
         ) {
-            ArtistCard(cat)
-            FloatingActionButton(
-                onClick = {
-                    navController.navigate("main_screen")
-                }
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                ArtistCard(cat)
             }
         }
     }
 
     @Composable
     fun ArtistCard(
-        cat: Cats
+        cat: Cats,
     ) {
         Column(
             Modifier
