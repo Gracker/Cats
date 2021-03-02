@@ -189,7 +189,7 @@ fun ComposeNavigation() {
             val mDetailPage = DetailPage()
             backStackEntry.arguments?.getString("cat")?.let { json ->
                 val cat = Gson().fromJson(json, Cats::class.java)
-                mDetailPage.detailPageScreen(navController = navController, cat)
+                mDetailPage.DetailPageScreen(navController = navController, cat)
             }
         }
     }
