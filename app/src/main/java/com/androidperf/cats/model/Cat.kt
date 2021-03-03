@@ -13,6 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.androidperf.cats
+package com.androidperf.cats.model
 
-class Cats(var name: String, var image: Int, var owner: String, val ownerImage: Int, var des: Int)
+class Cat(var name: String, var image: Int, var owner: String, val ownerImage: Int, var des: Int)

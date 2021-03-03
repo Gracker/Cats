@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.androidperf.cats
+package com.androidperf.cats.page
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -47,10 +47,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.popUpTo
+import com.androidperf.cats.R
+import com.androidperf.cats.model.Cat
 
 class DetailPage {
     @Composable
-    fun DetailPageScreen(navController: NavController, cat: Cats) {
+    fun DetailPageScreen(navController: NavController, cat: Cat) {
         Scaffold(
             topBar = {
                 TopAppBar(
@@ -87,11 +89,11 @@ class DetailPage {
 
     @Composable
     fun ArtistCard(
-        cat: Cats,
+        cat: Cat,
     ) {
         Column(
             Modifier
-                .padding(PaddingValues(horizontal = 0.dp, vertical = 8.dp))
+                .padding(PaddingValues(horizontal = 8.dp, vertical = 4.dp))
                 .verticalScroll(rememberScrollState())
         ) {
             val padding = 8.dp
