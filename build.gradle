@@ -15,20 +15,28 @@
  */
 
 buildscript {
-    ext.kotlin_version = '1.4.30'
-    ext.compose_version = '1.0.0-beta01'
+    ext.kotlin_version = '1.5.31'
+    ext.compose_version = '1.0.4'
     ext.coroutines_version = '1.4.2'
 
     repositories {
-        maven { url 'http://maven.aliyun.com/nexus/content/repositories/google' }
-        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
-        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         google()
         mavenCentral()
+        maven {
+            allowInsecureProtocol = true
+            url 'http://maven.aliyun.com/nexus/content/repositories/google' }
+        maven {
+            allowInsecureProtocol = true
+            url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
+        maven {
+            allowInsecureProtocol = true
+            url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+
+
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.0-alpha08'
+        classpath 'com.android.tools.build:gradle:7.2.0-alpha03'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -39,11 +47,18 @@ plugins {
 
 subprojects {
     repositories {
-        maven { url 'http://maven.aliyun.com/nexus/content/repositories/google' }
-        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
-        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         google()
         mavenCentral()
+        maven {
+            allowInsecureProtocol = true
+            url 'http://maven.aliyun.com/nexus/content/repositories/google' }
+        maven {
+            allowInsecureProtocol = true
+            url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
+        maven {
+            allowInsecureProtocol = true
+            url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+
     }
 
     apply plugin: 'com.diffplug.spotless'

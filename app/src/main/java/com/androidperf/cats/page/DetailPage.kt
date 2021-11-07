@@ -45,8 +45,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.navigate
-import androidx.navigation.compose.popUpTo
 import com.androidperf.cats.R
 import com.androidperf.cats.model.Cat
 

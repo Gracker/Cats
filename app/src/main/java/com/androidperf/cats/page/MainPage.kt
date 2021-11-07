@@ -43,10 +43,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.navigate
 import com.androidperf.cats.logic.DataUtils
 import com.androidperf.cats.model.Cat
 import com.google.gson.Gson
+
 
 @Composable
 fun MainPage(navController: NavController) {
